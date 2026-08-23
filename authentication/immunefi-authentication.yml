@@ -1,0 +1,45 @@
+generated: '2026-08-23'
+method: probed
+source: https://immunefi.com/public-api/bounties.json
+note: >-
+  Immunefi publishes no OpenAPI and no authentication documentation, so this profile was
+  established by probe rather than from a spec. The single public endpoint was fetched with no
+  credentials, no cookie and no Authorization header and returned HTTP 200 with 6,498,795 bytes of
+  application/json, so anonymous access is confirmed, not assumed. Authenticated surfaces exist
+  (the researcher application at bugs.immunefi.com and the Magnus customer console) but their
+  contracts are not public.
+security_schemes:
+- name: none
+  type: none
+  in: null
+  scheme: null
+  description: >-
+    No credential of any kind is required or accepted on the public bounty-programs endpoint.
+  applies_to:
+  - GET https://immunefi.com/public-api/bounties.json
+  evidence:
+    url: https://immunefi.com/public-api/bounties.json
+    method: GET
+    request_headers_sent: [User-Agent]
+    http_status: 200
+    content_type: application/json
+    bytes: 6498795
+    fetched: '2026-08-23'
+oauth2: false
+openid_connect: false
+api_keys: false
+mutual_tls: false
+gated_surfaces:
+- name: Immunefi Bugs researcher application
+  url: https://bugs.immunefi.com/
+  status: 200
+  note: >-
+    Client-rendered application. No public API contract; account-based sign-in. Its
+    /.well-known/* paths return a Next.js 404 shell.
+- name: Immunefi support knowledge base
+  url: https://immunefisupport.zendesk.com/hc/en-us
+  status: 403
+  note: >-
+    Cloudflare interactive bot challenge ("Enable JavaScript and cookies to continue"), not an
+    Immunefi authorization gate. A human browser reaches the same pages; our probe was turned
+    away, so any auth detail documented there could not be read.

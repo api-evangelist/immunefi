@@ -1,0 +1,105 @@
+generated: '2026-08-23'
+method: derived
+source: >-
+  derived from the live payload of https://immunefi.com/public-api/bounties.json (2026-08-23) plus
+  searched confirmation on immunefi.com
+note: >-
+  Immunefi makes no cross-cutting API standards claims — no OAuth, no OIDC, no JSON:API, no
+  RFC 9457, no OData, no SCIM. Those are recorded as false with evidence below rather than left
+  unstated. What it DOES declare, in the contract itself, is a domain standard for its own market
+  — and it is the standard's author, not merely an adopter.
+standards:
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 flow anywhere. The public endpoint is anonymous
+    (authentication/immunefi-authentication.yml); /.well-known/oauth-authorization-server returns
+    the same 308 self-redirect as every other path on the host.
+- id: oidc
+  conforms: false
+  evidence: '/.well-known/openid-configuration returns HTTP 308 self-redirect, no document.'
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    Errors are text/html Next.js pages, never application/problem+json. See
+    errors/immunefi-problem-types.yml.
+- id: json:api
+  conforms: false
+  evidence: >-
+    Response is a bare top-level JSON array of domain objects with no data/attributes/relationships
+    envelope and no type/id member pair.
+- id: pagination
+  conforms: false
+  evidence: >-
+    No pagination of any style. The whole 249-record, 6.5MB collection is returned in one array
+    with no limit/offset/cursor parameter and no Link header.
+- id: idempotency
+  conforms: na
+  evidence: Read-only surface; no write operation exists to make idempotent.
+- id: conditional-requests
+  conforms: true
+  evidence: >-
+    RFC 9110 conditional GET is genuinely implemented. The response carries a weak validator
+    ETag: W/"2026-08-23T13:16:25.282Z:249:249", and a request repeating it as If-None-Match
+    returned HTTP 304 with a zero-byte body on 2026-08-23. This is the only interoperability
+    standard the endpoint actually honours, and given a 6.5MB payload it is the one that matters
+    most to a consumer.
+- id: scim
+  conforms: false
+  evidence: No SCIM schema URN appears anywhere in the payload or on the site.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface and no OData query options.
+domain_standards:
+- id: immunefi-vulnerability-severity-classification-system
+  name: Immunefi Vulnerability Severity Classification System
+  version: v2.3
+  role: author
+  conforms: true
+  url: https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-3/
+  index: https://immunefi.com/severity-classification-systems/
+  evidence: >-
+    The contract does not merely reference the taxonomy in prose — it serializes it. In the live
+    response from https://immunefi.com/public-api/bounties.json every rewards[] element carries a
+    severity field drawn from exactly the four classification levels (observed across all 249
+    programs: critical 261, high 238, medium 201, low 113 occurrences, with no other value), every
+    impacts[] element carries the same severity enum alongside an asset type of
+    smart_contract / websites_and_applications / blockchain_dlt, and each program carries
+    pocPerTypeAndSeverity entries of the form "smart_contract - critical". A consumer who already
+    speaks the Immunefi severity taxonomy can read a reward table straight out of this payload
+    with no bespoke mapping.
+  market_significance: >-
+    This is the severity taxonomy the majority of web3 bug bounty programs are written against,
+    which is why the enum in this payload is effectively an industry vocabulary rather than a
+    vendor-private one.
+- id: immunefi-standard
+  name: Immunefi Standard
+  role: author
+  conforms: true
+  evidence: >-
+    Each program record carries a boolean immunefiStandard field marking whether the program meets
+    Immunefi's published program-quality criteria. Present on all 249 records in the 2026-08-23
+    payload.
+- id: seal-safe-harbor
+  name: Safe Harbor (SEAL Safe Harbor framework)
+  role: adopter
+  conforms: true
+  url: https://immunefi.com/safe-harbor/
+  evidence: >-
+    Program records carry the feature string "Safe Harbor Documents Signed", and individual
+    assets carry an isSafeHarbor boolean, so safe-harbor status is machine-readable per asset
+    rather than only asserted on a marketing page. https://immunefi.com/safe-harbor/ returns
+    HTTP 200.
+certifications:
+  published: []
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP attestation is published anywhere on
+    immunefi.com, and there is no trust center (https://immunefi.com/trust/ returns 404). No
+    Compliance or TrustCenter pointer is emitted, because there is nothing to point at.
+regulatory_regime:
+  matched: none
+  note: >-
+    The Kin Score industry_regulatory layer carries no regime for crowdsourced security /
+    vulnerability disclosure, so no regime-specific standards shortlist applied here. The
+    domain_standard_conformance award is reward-only, and the award above is earned on the
+    taxonomy Immunefi itself authors and serializes.

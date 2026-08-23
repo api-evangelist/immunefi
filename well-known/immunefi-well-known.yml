@@ -1,0 +1,56 @@
+generated: '2026-08-23'
+method: probed
+source: live GET of /.well-known/* on every Immunefi host
+hit_count: 0
+note: >-
+  NOTHING WAS SERVED. immunefi.com answers every /.well-known/* path — including a deliberately
+  nonsense control path — with an HTTP 308 whose Location header points back at the identical URL,
+  i.e. a self-referential redirect loop that never resolves to a document. That is a catch-all
+  edge rule, not a discovery surface, so no document was saved and no WellKnown or SecurityTxt
+  pointer is emitted. bugs.immunefi.com returns a Next.js 404 HTML shell (~60KB) for every path.
+  docs.immunefi.foundation returns a plain "File not found" 404.
+hosts:
+- host: https://immunefi.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 308
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 308
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 308
+    file: null
+  - path: /.well-known/api-catalog
+    status: 308
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 308
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 308
+    file: null
+  - path: /.well-known/agent.json
+    status: 308
+    file: null
+  soft_404_control:
+    path: /.well-known/DEFINITELY-NOT-A-REAL-PATH-xyz
+    status: 308
+    bytes: 14
+    body: 'Redirecting...'
+    verdict: >-
+      Identical 308 self-redirect as every real path, so a 308 on this host proves nothing about
+      the existence of any document.
+- host: https://bugs.immunefi.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+- host: https://docs.immunefi.foundation
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null

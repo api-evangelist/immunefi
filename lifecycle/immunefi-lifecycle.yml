@@ -1,0 +1,60 @@
+generated: '2026-08-23'
+method: searched
+source: https://immunefi.com/ (site-wide search for status, changelog, versioning and deprecation surfaces)
+note: >-
+  Immunefi publishes no API lifecycle commitments of any kind. This is not a gap in our search —
+  each surface below was probed individually and the status recorded. The one thing Immunefi does
+  version publicly is its severity taxonomy, not its API, and that is captured here because it is
+  the document integrators and researchers actually track.
+versioning:
+  scheme: none
+  in_path: false
+  in_header: false
+  detail: >-
+    The route is /public-api/bounties.json with no version segment. No API-Version, no
+    Accept-Version, no version field in the payload.
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  probes:
+  - {url: 'https://immunefi.com/public-api/bounties.json', status: 200, note: 'response carries no Deprecation or Sunset header'}
+status_page:
+  present: false
+  probes:
+  - {url: 'https://status.immunefi.com/', status: 0, note: 'DNS does not resolve — NXDOMAIN'}
+  - {url: 'https://immunefi.com/status', status: 404}
+sla:
+  published: false
+  detail: No service-level agreement is published for the public endpoint.
+changelog:
+  api_changelog: false
+  detail: >-
+    https://immunefi.com/changelog/ returns 404. The company blog at https://immunefi.com/blog/
+    (RSS at /blog/feed, HTTP 200) carries product announcements but is not a dated API changelog
+    and records no API changes.
+  probes:
+  - {url: 'https://immunefi.com/changelog/', status: 404}
+  - {url: 'https://immunefi.com/blog/feed', status: 200, note: 'RSS 2.0, 150KB'}
+roadmap:
+  published: false
+  probes:
+  - {url: 'https://immunefi.com/roadmap/', status: 404}
+deprecated_operations: []
+versioned_documents:
+- name: Immunefi Vulnerability Severity Classification System
+  current: v2.3
+  url: https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-3/
+  index: https://immunefi.com/severity-classification-systems/
+  history:
+  - {version: v2.3, url: 'https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-3/'}
+  - {version: v2.2, url: 'https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-2/'}
+  - {version: v2.1, url: 'https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2-1/'}
+  - {version: v2, url: 'https://immunefi.com/immunefi-vulnerability-severity-classification-system-v2/'}
+  - {version: v1.2, url: 'https://immunefi.com/severity-system-comprehensive/'}
+  note: >-
+    Immunefi keeps every prior version of the taxonomy live at its own URL rather than replacing
+    it in place. That matters because a bounty program signed against v2.1 is still governed by
+    v2.1, so the old documents are load-bearing contract terms, not archive. This is a more
+    disciplined deprecation posture than the API itself has.

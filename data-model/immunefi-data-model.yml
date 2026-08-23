@@ -1,0 +1,158 @@
+generated: '2026-08-23'
+method: derived
+source: >-
+  derived from the live response of https://immunefi.com/public-api/bounties.json fetched
+  2026-08-23 (249 records, 6,498,795 bytes) — see examples/immunefi-bounty-program-example.json
+note: >-
+  Immunefi publishes no OpenAPI and no JSON Schema, so this entity graph was derived by walking
+  every record in the actual response rather than from a contract. Enumerations below are the
+  complete set of distinct values observed across all 249 programs, with occurrence counts, so a
+  consumer can tell a stable enum from a free-text field. Nothing here is inferred from marketing
+  prose.
+entities:
+- name: BountyProgram
+  root: true
+  description: >-
+    One bug bounty, audit competition or attackathon listed on Immunefi. The top-level array
+    element. 249 observed.
+  identifier: slug
+  fields:
+  - {name: project, type: string, note: display name of the protocol}
+  - {name: slug, type: string, note: URL segment — https://immunefi.com/bug-bounty/<slug>/}
+  - {name: description, type: string}
+  - {name: logo, type: string, format: uri, note: Contentful CDN (images.ctfassets.net)}
+  - {name: websiteUrl, type: string, format: uri, nullable: true}
+  - {name: githubUrl, type: string, format: uri, nullable: true}
+  - {name: maxBounty, type: integer}
+  - {name: rewardsToken, type: string, note: free text, not an enum — observed values include "USDC", "USDC or USDT", "BTC, ETH"}
+  - {name: rewardsPool, type: number, nullable: true}
+  - {name: primaryPool, type: number, nullable: true}
+  - {name: allStarsPool, type: number, nullable: true}
+  - {name: podiumPool, type: number, nullable: true}
+  - {name: primaryPaymentWallet, type: string, nullable: true}
+  - {name: launchDate, type: string, format: date-time}
+  - {name: updatedDate, type: string, format: date-time}
+  - {name: endDate, type: string, format: date-time, nullable: true}
+  - {name: evaluationEndDate, type: string, format: date-time, nullable: true}
+  - {name: isPaused, type: boolean}
+  - {name: pausedAt, type: string, format: date-time, nullable: true}
+  - {name: pausedMessage, type: string, nullable: true}
+  - {name: inviteOnly, type: boolean}
+  - {name: kyc, type: boolean}
+  - {name: immunefiStandard, type: boolean, note: whether the program meets the Immunefi Standard badge criteria}
+  - {name: hideAssetsInScope, type: boolean}
+  - {name: tenPercentEconomicRule, type: boolean, nullable: true}
+  - {name: pocPerTypeAndSeverity, type: array, items: string, note: 'e.g. "smart_contract - critical"'}
+  - {name: features, type: array, items: string, note: 'e.g. "Safe Harbor Documents Signed", "Managed Triage: Expert Assessment", "Arbitration"'}
+  - {name: ecosystem, type: array, items: string, note: chains — ETH, Optimism, Solana, …}
+  - {name: language, type: array, items: string, note: Solidity, Rust, Move, …}
+  - {name: programOverview, type: string, note: markdown prose}
+  - {name: rewardsBody, type: string, note: markdown prose}
+  - {name: impactsBody, type: string, note: markdown prose}
+  - {name: assetsBodyV2, type: string, note: markdown prose — the V2 suffix is the only evidence of a payload shape revision}
+  - {name: outOfScopeAndRules, type: string}
+  - {name: knownIssues, type: string, nullable: true}
+  - {name: eligibilityCriteria, type: string, nullable: true}
+  - {name: customOutOfScopeInformation, type: string, nullable: true}
+  - {name: customProhibitedActivities, type: string, nullable: true}
+  - {name: defaultOutOfScopeBlockchain, type: [string, 'null']}
+  - {name: defaultOutOfScopeSmartContract, type: [string, 'null']}
+  - {name: defaultOutOfScopeWebAndApplications, type: [string, 'null']}
+  - {name: defaultOutOfScopeGeneral, type: [string, 'null']}
+  - {name: defaultFeasibilityLimitations, type: [string, 'null']}
+  - {name: defaultProhibitedActivities, type: [string, 'null']}
+  - {name: boostedIntroLive, type: [string, 'null']}
+  - {name: boostedIntroStartingIn, type: [string, 'null']}
+  - {name: boostedIntroEvaluating, type: [string, 'null']}
+  - {name: boostedIntroFinished, type: [string, 'null']}
+  - {name: boostedLeaderboard, type: [array, 'null']}
+  - {name: boostedSummaryReport, type: [string, 'null']}
+- name: Asset
+  description: One in-scope target. 6,984 observed across all programs.
+  identifier: id
+  fields:
+  - {name: id, type: string, note: 22-char Contentful entry id}
+  - {name: url, type: string, note: block explorer address, repository URL or web origin}
+  - {name: type, type: string, enum_ref: asset_type}
+  - {name: description, type: string, nullable: true}
+  - {name: addedAt, type: string, format: date-time}
+  - {name: revision, type: integer}
+  - {name: isPrimacyOfImpact, type: boolean, nullable: true}
+  - {name: isSafeHarbor, type: boolean, nullable: true}
+- name: Reward
+  description: One payout rule, keyed by severity and asset type. 1,096 observed.
+  identifier: id
+  fields:
+  - {name: id, type: integer}
+  - {name: severity, type: string, enum_ref: severity, nullable: true}
+  - {name: assetType, type: string, enum_ref: asset_type}
+  - {name: rewardModel, type: string, enum_ref: reward_model, nullable: true}
+  - {name: minReward, type: number, nullable: true}
+  - {name: maxReward, type: number, nullable: true}
+  - {name: fixedReward, type: number, nullable: true}
+  - {name: otherImpactMaxReward, type: number, nullable: true}
+  - {name: rewardCalculationPercentage, type: number, nullable: true, note: the "10% economic rule" percentage}
+  - {name: pocRequired, type: boolean, nullable: true}
+  - {name: primacy, type: string, nullable: true}
+  - {name: level, type: string, nullable: true}
+  - {name: payout, type: number, nullable: true}
+- name: Impact
+  description: One in-scope vulnerability impact statement. 4,067 observed.
+  identifier: id
+  fields:
+  - {name: id, type: integer}
+  - {name: type, type: string, enum_ref: asset_type}
+  - {name: severity, type: string, enum_ref: severity}
+  - {name: title, type: string, note: the impact statement itself}
+- name: Audit
+  description: A prior third-party audit linked from the program page.
+  identifier: id
+  fields:
+  - {name: id, type: integer}
+  - {name: auditor, type: string}
+  - {name: date, type: string}
+  - {name: url, type: string, format: uri}
+relationships:
+- {from: BountyProgram, to: Asset, cardinality: has_many, via: assets}
+- {from: BountyProgram, to: Reward, cardinality: has_many, via: rewards}
+- {from: BountyProgram, to: Impact, cardinality: has_many, via: impacts}
+- {from: BountyProgram, to: Audit, cardinality: has_many, via: audits}
+- {from: Reward, to: Asset, cardinality: belongs_to, via: 'assetType matches Asset.type'}
+- {from: Impact, to: Asset, cardinality: belongs_to, via: 'type matches Asset.type'}
+enumerations:
+  asset_type:
+    observed:
+      smart_contract: 6146
+      blockchain_dlt: 517
+      websites_and_applications: 321
+  severity:
+    observed:
+      critical: 261
+      high: 238
+      medium: 201
+      low: 113
+    note: >-
+      These four values are the Immunefi Vulnerability Severity Classification System levels.
+      See conformance/immunefi-conformance.yml.
+  reward_model:
+    observed:
+      range: 381
+      fixed: 345
+      up_to: 87
+  program_type:
+    observed: [Smart Contract, Websites and Applications, Blockchain/DLT]
+  project_type:
+    observed: [Defi, Blockchain, Infrastructure, NFT, Exchange]
+  responsible_publication_category:
+    observed: [category_1, category_2, category_3]
+  product_type:
+    note: >-
+      Long tail, not a closed enum. Most frequent observed values include Staking, Lending, DEX,
+      L1, AMM, Yield Aggregator, Asset Management, L2, Services, Crosschain Liquidity, DAO,
+      Stablecoin.
+id_conventions:
+  contentful_entry_id: >-
+    Asset.id is a 22-character Contentful entry identifier (e.g. 2Ww79tsQT2sDV7vwuDGWNU),
+    confirming the catalog is served out of Contentful behind the Vercel route.
+  numeric_ids: Reward.id, Impact.id and Audit.id are plain integers, unique per record.
+  slug: BountyProgram.slug is the stable public key and resolves to https://immunefi.com/bug-bounty/<slug>/

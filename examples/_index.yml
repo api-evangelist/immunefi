@@ -1,0 +1,18 @@
+generated: '2026-08-23'
+method: probed
+source: https://immunefi.com/public-api/bounties.json
+note: >-
+  A real response record captured from a live unauthenticated GET on 2026-08-23. The array element
+  for Immunefi's own bug bounty program (slug "immunefi") was extracted verbatim; only free-text
+  prose fields longer than 600 characters were truncated, and the assets/impacts arrays were cut
+  to the first few members, so the file stays readable. Field names, types, enum values and
+  nesting are exactly as served. No value in this file was authored by API Evangelist.
+examples:
+- file: immunefi-bounty-program-example.json
+  operation: GET /public-api/bounties.json
+  describes: one element of the top-level array
+  http_status: 200
+  content_type: application/json
+  fetched: '2026-08-23'
+  full_response_bytes: 6498795
+  full_response_records: 249

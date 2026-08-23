@@ -1,0 +1,39 @@
+generated: '2026-08-23'
+method: probed
+source: >-
+  live probes of https://immunefi.com/public-api/* — no OpenAPI or error reference exists to
+  derive from
+format: none
+rfc9457: false
+problem_type_count: 0
+note: >-
+  Immunefi's public endpoint has no machine-readable error surface. Every unmatched path under
+  /public-api/ returns HTTP 404 with Content-Type text/html and an ~80KB Next.js error shell
+  carrying x-matched-path: /_not-found — a rendered web page, not an API error. There is no error
+  code, no error envelope, no problem+json, and no documented error reference anywhere on the
+  site. An agent consuming this API cannot branch on an error body; it must branch on the HTTP
+  status and Content-Type. This file records that absence with evidence rather than leaving it
+  unmeasured, and no ErrorCatalog pointer is emitted in apis.yml, because there is no catalog to
+  point at.
+problem_types: []
+observed_error_responses:
+- request: GET https://immunefi.com/public-api/projects.json
+  http_status: 404
+  content_type: text/html
+  bytes: 80608
+  x_matched_path: /_not-found
+  body_shape: Next.js client-rendered 404 page
+  machine_readable: false
+  fetched: '2026-08-23'
+- request: GET https://immunefi.com/public-api/
+  http_status: 404
+  content_type: text/html
+  bytes: 38785
+  machine_readable: false
+  fetched: '2026-08-23'
+- request: GET https://immunefi.com/public-api/bounties
+  http_status: 308
+  note: >-
+    The extensionless path 308-redirects; only the .json path is a real route.
+  machine_readable: false
+  fetched: '2026-08-23'

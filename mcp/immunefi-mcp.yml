@@ -1,0 +1,47 @@
+generated: '2026-08-23'
+method: searched
+source: >-
+  searched npm, github.com/immunefi-team, mcpmarket.com and the immunefi.com site for a
+  first-party MCP server
+status: none
+note: >-
+  Immunefi ships NO Model Context Protocol server. A community MCP server that wraps the same
+  public /public-api/bounties.json endpoint is listed on mcpmarket.com, but it is third-party and
+  is recorded below as such — it is not published by Immunefi, is not referenced from
+  immunefi.com, and does not appear in the immunefi-team GitHub organization (38 public repos,
+  all Solidity proof-of-concept and audit-competition material). Because nobody ships a
+  first-party server, no MCPServer pointer is emitted in apis.yml: emitting one would credit
+  Immunefi with an agent surface it does not operate. The candidate tool below is what a server
+  over the existing public endpoint could offer; it is a design note, not a deployed thing.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: none
+  verified: searched
+tools: []
+candidate_tools:
+- name: list_bounty_programs
+  status: candidate
+  rest: GET https://immunefi.com/public-api/bounties.json
+  description: >-
+    Return the full Immunefi bug bounty catalog. The live endpoint takes no parameters and returns
+    all 249 programs, so any filtering (by ecosystem, language, severity, maxBounty, programType,
+    kyc, inviteOnly) would have to be implemented client-side inside the server, not passed
+    through to Immunefi.
+  input_schema_source: >-
+    None available. Immunefi publishes no OpenAPI, so there are no operation parameters to inherit
+    as an inputSchema. The response shape is documented in data-model/immunefi-data-model.yml,
+    derived from the live payload.
+third_party_servers:
+- name: Immunefi (community MCP server)
+  listing: https://mcpmarket.com/server/immunefi
+  official: false
+  publisher: unaffiliated community author
+  wraps: https://immunefi.com/public-api/bounties.json
+  note: >-
+    Described by its listing as a bridge that fetches and caches data from the Immunefi API and
+    exposes search/filter over bug bounty programs. Recorded for completeness; not evidence of an
+    Immunefi agent surface. The mcpmarket listing returned HTTP 429 to our probe on 2026-08-23, so
+    its tool list was not read and no tool schemas are reproduced here.

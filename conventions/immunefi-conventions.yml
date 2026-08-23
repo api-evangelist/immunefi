@@ -1,0 +1,97 @@
+generated: '2026-08-23'
+method: probed
+source: >-
+  live GET/HEAD/OPTIONS/conditional-GET against https://immunefi.com/public-api/bounties.json
+note: >-
+  Immunefi publishes no API reference, so every convention below was established by probing the
+  live endpoint rather than read from documentation. Absences are recorded as absences.
+auth:
+  style: none
+  detail: Anonymous GET. See authentication/immunefi-authentication.yml.
+transport:
+  protocol: https
+  http_version: HTTP/2
+  methods_observed:
+    GET: 200
+    HEAD: 200
+    OPTIONS: 204
+  media_type: application/json
+  cors:
+    enabled: false
+    evidence: >-
+      A GET carrying Origin: https://example.com returns no Access-Control-Allow-Origin header,
+      so the endpoint cannot be called from browser JavaScript on another origin. Server-side
+      or agent-side fetches are unaffected.
+pagination:
+  style: none
+  detail: >-
+    The route returns the entire collection as a single top-level JSON array (249 program objects,
+    6,498,795 bytes on 2026-08-23). There are no limit/offset/cursor parameters, no Link header,
+    and no per-program path — a query string is ignored and the same full array is returned.
+filtering:
+  supported: false
+  detail: >-
+    No server-side filtering. Community tooling (the ibb CLI) exists precisely because callers
+    must download the whole corpus and filter client-side.
+caching:
+  etag: true
+  etag_form: 'W/"<ISO8601 last-modified>:<record count>:<record count>" e.g. W/"2026-08-23T13:16:25.282Z:249:249"'
+  conditional_requests: true
+  conditional_evidence:
+    request_header: 'If-None-Match: W/"2026-08-23T13:16:25.282Z:249:249"'
+    response_status: 304
+    response_bytes: 0
+    fetched: '2026-08-23'
+  cache_control: public, max-age=0, must-revalidate
+  guidance: >-
+    This is the one genuinely well-behaved runtime convention on the endpoint and it is the only
+    efficient way to consume it. The weak ETag encodes both the last-modified timestamp and the
+    record count, so a caller can detect a catalog change from the ETag string alone without
+    re-transferring 6.5MB. Poll with If-None-Match and expect 304 until the catalog changes.
+versioning:
+  scheme: none
+  detail: >-
+    The path carries no version segment and no version header is returned. Payload shape is
+    versioned only implicitly — the record carries an assetsBodyV2 field alongside legacy
+    equivalents, which is the only evidence of a shape revision.
+error_envelope:
+  format: none
+  detail: >-
+    Errors are not machine-readable. An unmatched path under /public-api/ returns HTTP 404 with
+    text/html — an ~80KB Next.js error shell carrying x-matched-path: /_not-found — not JSON and
+    not RFC 9457 problem+json. An agent must branch on Content-Type, not parse the body.
+rate_limit_signaling:
+  present: false
+  detail: See rate-limits/immunefi-rate-limits.yml — no rate-limit headers of any family.
+request_id_tracing:
+  provider_request_id: false
+  edge_trace: >-
+    Only Cloudflare cf-ray and Vercel x-vercel-id are returned. Both identify the edge request,
+    not an Immunefi-side operation, so they are of limited use in a support conversation.
+idempotency:
+  supported: na
+  detail: >-
+    Not applicable. The public surface is read-only; there is no write operation that could be
+    duplicated, so idempotency keys have nothing to protect. No Idempotency pointer is emitted,
+    because emitting one would assert a safety property the API has no occasion to provide.
+dry_run_mode:
+  supported: na
+  detail: Not applicable — read-only surface, nothing to rehearse.
+reversibility:
+  applicable: false
+  grade: na
+  detail: >-
+    Not applicable. The public API is strictly read-only — GET returns a catalog and there is no
+    create, update, delete, cancel, refund or any other state-changing operation exposed. An agent
+    calling this API cannot take an action that would need to be taken back, so reversibility has
+    no denominator here. Write operations at Immunefi (submitting a bug report, accepting a
+    payout) happen inside the authenticated researcher application at bugs.immunefi.com, whose
+    contract is not public; nothing is asserted about their reversibility because nothing about
+    them was observed.
+  write_surfaces: []
+cross_links:
+  authentication: authentication/immunefi-authentication.yml
+  rate_limits: rate-limits/immunefi-rate-limits.yml
+  errors: errors/immunefi-problem-types.yml
+  lifecycle: lifecycle/immunefi-lifecycle.yml
+  data_model: data-model/immunefi-data-model.yml

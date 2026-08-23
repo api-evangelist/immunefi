@@ -1,0 +1,34 @@
+generated: '2026-08-23'
+method: probed
+source: https://immunefi.com/public-api/bounties.json
+limit_count: 0
+note: >-
+  Immunefi documents no rate limits for its public endpoint and returns no rate-limit response
+  headers. The full response headers were captured on a live unauthenticated GET and contain no
+  X-RateLimit-*, no RateLimit-*, and no Retry-After. The only runtime signals an agent gets are
+  caching headers (ETag plus Cache-Control) and Cloudflare edge headers. An integrator therefore
+  has no published budget and no machine-readable signal to back off against; the honest
+  measurement is zero documented limits, not an unknown.
+rate_limits: []
+observed_response_headers:
+  fetched: '2026-08-23'
+  url: https://immunefi.com/public-api/bounties.json
+  http_status: 200
+  rate_limit_headers_present: false
+  headers:
+    content-type: application/json
+    cache-control: public, max-age=0, must-revalidate
+    etag: W/"2026-08-23T13:16:25.282Z:249:249"
+    age: '0'
+    x-vercel-cache: MISS
+    x-matched-path: /public-api/bounties.json
+    server: cloudflare
+    cf-cache-status: DYNAMIC
+    strict-transport-security: max-age=15552000; includeSubDomains; preload
+    x-content-type-options: nosniff
+  exhaustion_status_code: null
+  retry_after: null
+efficiency_note: >-
+  The endpoint returns the entire 249-program catalog in one 6.5MB array with no filter or
+  pagination parameters, so every poll re-transfers the whole corpus. The weak ETag is the only
+  mechanism available for conditional requests and is the correct way to poll this API.

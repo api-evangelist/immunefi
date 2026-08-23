@@ -1,0 +1,36 @@
+generated: '2026-08-23'
+method: searched
+source: https://immunefi.com/projects/
+plan_count: 0
+note: >-
+  Immunefi publishes no pricing tiers for either side of its marketplace. https://immunefi.com/pricing/
+  returns HTTP 404 and there is no plans, tiers or fees page anywhere in the sitemap. The
+  /projects/ page (HTTP 200) routes protocols to an onboarding conversation — "sign up for a bug
+  bounty here, and we'll begin the onboarding process" — with the single cost statement being that
+  the Immunefi Bugs reporting platform is "Free for all Immunefi clients". This is a contact-sales
+  motion, so plan_count is an honest zero rather than an omission.
+plans: []
+commercial_model:
+  side_protocols:
+    model: contact-sales
+    url: https://immunefi.com/projects/
+    detail: >-
+      Protocols fund their own bounty pool and engage Immunefi for triage, arbitration and
+      program management. Neither the platform fee nor any tiering is published.
+    included_free:
+    - name: Immunefi Bugs reporting platform
+      note: Stated as "Free for all Immunefi clients" on https://immunefi.com/projects/.
+  side_researchers:
+    model: free-to-participate
+    url: https://immunefi.com/hackers/
+    detail: >-
+      Security researchers pay nothing. Compensation is the per-program bounty, whose full reward
+      table is machine-readable in the public API — rewards[] carries minReward/maxReward/fixedReward
+      by severity and asset type, plus rewardModel of range, fixed or up_to.
+    published_reward_data:
+      url: https://immunefi.com/public-api/bounties.json
+      programs: 249
+      reward_rules: 1096
+      note: >-
+        Unusually, the money in this marketplace IS published machine-readably — just on the payout
+        side rather than the price side.

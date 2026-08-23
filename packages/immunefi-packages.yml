@@ -1,0 +1,56 @@
+generated: '2026-08-23'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, crates.io, api.github.com/orgs/immunefi-team, and the
+  immunefi.com site
+official_package_count: 0
+note: >-
+  Immunefi publishes NO first-party client library in any public registry. The GitHub organization
+  github.com/immunefi-team (38 public repositories, confirmed as Immunefi's own via its
+  api.github.com blog field "www.immunefi.com") contains only Solidity proof-of-concept, audit
+  competition and hack-analysis repositories plus the Vaults contracts — no SDK, no CLI, no API
+  client. npm search for "immunefi" returns only third-party and squatted packages; PyPI has no
+  "immunefi" project (404); the only crates.io hit is a community tool. Everything listed below is
+  therefore official: false and is recorded so a consumer can tell community work apart from a
+  first-party SDK.
+packages: []
+third_party_clients:
+- language: rust
+  registry: crates.io
+  name: ibb
+  url: https://crates.io/crates/ibb
+  official: false
+  version: 0.2.0
+  published: '2025-11-24'
+  publisher: infosec-us-team
+  note: >-
+    "Like jq for the Immunefi REST API" — a community CLI that reads the same public
+    /public-api/bounties.json endpoint this profile records. Version and date read from
+    crates.io/api/v1/crates?q=immunefi.
+- language: javascript
+  registry: npm
+  name: '@tkporter/immunefi-cli'
+  url: https://www.npmjs.com/package/@tkporter/immunefi-cli
+  official: false
+  version: 1.0.0
+  published: '2026-04-07'
+  note: Personal fork; not published under an Immunefi-controlled npm scope.
+- language: javascript
+  registry: npm
+  name: '@hyperlane-xyz/immunefi-cli'
+  url: https://www.npmjs.com/package/@hyperlane-xyz/immunefi-cli
+  official: false
+  version: 1.0.0-beta-1
+  published: '2026-04-09'
+  note: Published by Hyperlane, an Immunefi customer — not by Immunefi.
+source_repositories:
+- name: immunefi-team
+  url: https://github.com/immunefi-team
+  official: true
+  public_repos: 38
+  note: >-
+    Verified as Immunefi's own organization (api.github.com/orgs/immunefi-team returns
+    name "Immunefi", blog "www.immunefi.com"). Contains Solidity PoCs, audit-competition
+    repositories and the Immunefi Vaults contracts. Contains no API client library.
+  version: null
+  published: null

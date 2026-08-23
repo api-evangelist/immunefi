@@ -1,0 +1,56 @@
+generated: '2026-08-23'
+method: searched
+source: https://immunefisupport.zendesk.com/hc/en-us/articles/14654603526033-Webhook-Notification-System-Setup
+asyncapi_spec: false
+note: >-
+  Immunefi publishes NO AsyncAPI document and no event catalog. It does document a webhook
+  notification system for its customers, on its own support knowledge base, in an article titled
+  "Webhook Notification System Setup". That article could not be read directly: the Zendesk host
+  is fronted by a Cloudflare interactive bot challenge that answered HTTP 403 with an "Enable
+  JavaScript and cookies to continue" body to every request we made, including with a browser
+  User-Agent. That is an edge policy against crawlers, not an Immunefi authorization gate — a
+  human browser reaches the page. Only what the article's own indexed title and summary state is
+  recorded below; the payload schema, headers, retry policy and signature scheme were NOT observed
+  and are therefore left null rather than guessed.
+webhooks:
+- name: escalated-bug-report-notification
+  documented: true
+  docs: https://immunefisupport.zendesk.com/hc/en-us/articles/14654603526033-Webhook-Notification-System-Setup
+  audience: projects running a bounty program on Immunefi (customer-side, authenticated)
+  trigger: >-
+    A new High or Critical severity bug report is escalated to the project. Severity levels are
+    those of the Immunefi Vulnerability Severity Classification System — see
+    conformance/immunefi-conformance.yml.
+  configuration: >-
+    The customer supplies a webhook URL in the Immunefi platform. Per the article summary the URL
+    is the only value required, and Immunefi stores it encrypted. Slack incoming-webhook URLs are
+    the documented target, so the delivery carries the Slack user and channel encoded in the URL
+    itself.
+  transport: https POST
+  payload_schema: null
+  signature_scheme: null
+  retry_policy: null
+  events_catalog: null
+  observed: false
+  evidence:
+  - url: https://immunefisupport.zendesk.com/hc/en-us/articles/14654603526033-Webhook-Notification-System-Setup
+    status: 403
+    note: Cloudflare bot challenge, not an authorization denial. Article exists and is search-indexed.
+  - url: https://immunefisupport.zendesk.com/api/v2/help_center/en-us/articles.json
+    status: 401
+    note: Zendesk Help Center API requires authentication on this instance.
+gaps:
+- >-
+  No AsyncAPI, no event schema, and no public payload example. A customer integrating this webhook
+  has to discover the body shape by receiving one.
+- >-
+  Webhook coverage is limited to High/Critical escalations. There is no documented event for
+  program creation, reward changes, asset scope changes or payout — all of which change in the
+  public bounties.json catalog and are only discoverable by polling it and diffing.
+polling_alternative:
+  url: https://immunefi.com/public-api/bounties.json
+  note: >-
+    The absence of a change-event surface is why the community mirrors this endpoint and commits
+    diffs to a git repository to detect scope and reward changes. Conditional GET with
+    If-None-Match returns 304 and is the correct way to poll — see
+    conventions/immunefi-conventions.yml.
